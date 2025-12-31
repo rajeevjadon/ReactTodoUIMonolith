@@ -1,5 +1,4 @@
 name: React CI Pipeline
-
 on:
   push:
     branches:
@@ -7,28 +6,37 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:   # Manual run option
-
+      
 jobs:
-  build:
-    name: Build React Application
+  demo:
+    name: Demo Job
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.1
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6.1.0
         with:
-          node-version: 18
+          node-version: 16.x
 
-      - name: Install dependencies
-        run: npm install
+      - name: Cache
+        uses: actions/cache@v5.0.1
+        with:
+          path: node_modules
+          key: ${{runner.os}}-node-${{hashfiles('**/package-lock.json') }}
 
-      - name: Run tests
-        run: npm test -- --watchAll=false
-        continue-on-error: true
+      - name: Install Dependancies
+        run: npm install 
 
-      - name: Build React app
-        run: npm run build
+      - name: Build
+        run: npm run build 
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifacts@v6.0.0
+        with:
+          name: build-${{GITHUB.RUN_ID}}
+          path: build 
+            
+
+    
