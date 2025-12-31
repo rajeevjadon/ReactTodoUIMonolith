@@ -1,4 +1,5 @@
 name: React CI Pipeline
+
 on:
   push:
     branches:
@@ -6,37 +7,35 @@ on:
   pull_request:
     branches:
       - main
-      
+
 jobs:
   demo:
     name: Demo Job
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v4
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v6.1.0
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 18
 
-      - name: Cache
-        uses: actions/cache@v5.0.1
+      - name: Cache dependencies
+        uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{runner.os}}-node-${{hashfiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install Dependancies
-        run: npm install 
+      - name: Install Dependencies
+        run: npm install
 
       - name: Build
-        run: npm run build 
+        run: npm run build
 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifacts@v6.0.0
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: build-${{GITHUB.RUN_ID}}
-          path: build 
-            
-
-    
+          name: build-${{ github.run_id }}
+          path: build
