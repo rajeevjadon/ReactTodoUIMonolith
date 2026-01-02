@@ -27,34 +27,33 @@ jobs:
           node-version: 18
 
       
-      - name: Cache dependencies 
-        uses: actions/cache@v4 
-        with: 
-          path: node_modules 
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache dependencies 
+      #   uses: actions/cache@v4 
+      #   with: 
+      #     path: node_modules 
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       
 
           
 
-      # 3. Install dependencies
-      - name: Install dependencies
-        run: npm install
+      # # 3. Install dependencies
+      # - name: Install dependencies
+      #   run: npm install
 
-      # 4. Build React app
-      # NOTE: CI=true is default in GitHub Actions.
-      # ESLint issues must be fixed in code (recommended).
+      # # 4. Build React app
+      # # NOTE: CI=true is default in GitHub Actions.
+      # # ESLint issues must be fixed in code (recommended).
 
-      - name: Build application
-        run: CI=false npm run build
+      # - name: Build application
+      #   run: CI=false npm run build
 
 
       
-      # - name: Build application
-      #   run: npm run build
+    
 
-      # 5. Upload build artifact
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-build-${{ github.run_id }}
-          path: build
+      # # 5. Upload build artifact
+      # - name: Upload build artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: react-build-${{ github.run_id }}
+      #     path: build
