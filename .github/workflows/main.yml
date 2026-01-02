@@ -10,9 +10,13 @@ on:
     branches:
       - main
 
+env:
+ name: sumit
+      
+
 jobs:
   build:
-    name: Build React Application
+    name: Build React Application $name
     runs-on: ubuntu-latest
 
     steps:
