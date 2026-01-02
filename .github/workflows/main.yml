@@ -11,25 +11,25 @@ on:
       - main
 
 env:
-  NAME: sumit
-  VALUE: Devops Lead
+  app: ToDo
+  managedBy: ${{ github.actor }}
 
 jobs:
   build:
-    name: Build React Application 
+    name: Build React Application ${{ env.app }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout ${{ env.NAME }}
+      - name: Checkout 
         uses: actions/checkout@v4
         
-      - name: Setup Node.js ${{ env.NAME }}
+      - name: Setup Node.js 
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
       - name: show var
-        run: echo $VALUE
+        run: echo $managedBy
       
 
 
