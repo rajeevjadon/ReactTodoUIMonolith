@@ -12,6 +12,7 @@ on:
 
 env:
   NAME: sumit
+  VALUE: Devops Lead
 
 jobs:
   build:
@@ -28,7 +29,7 @@ jobs:
           node-version: 18
 
       - name: show var
-        run: echo $NAME
+        run: echo $VALUE
       
 
 
