@@ -11,12 +11,11 @@ on:
       - main
 
 env:
- name: sumit
-      
+  NAME: sumit
 
 jobs:
   build:
-    name: Build React Application ${{env.name}}
+    name:  Build React Application - ${{ env.NAME }}
     runs-on: ubuntu-latest
 
     steps:
