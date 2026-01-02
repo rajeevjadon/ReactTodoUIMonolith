@@ -1,4 +1,4 @@
-name: Application DemoWork Flow
+name: React CI Pipeline
 
 on:
   push:
@@ -9,27 +9,34 @@ on:
       - main
 
 jobs:
-  demo:
-    name: Demo Job
+  build:
+    name: Build React Application
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repository code
       - name: Checkout source code
         uses: actions/checkout@v4
-        
-      - name: Setup Node.js environment
+
+      # 2. Setup Node.js (recommended for React)
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install Dependencies
+      # 3. Install dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name: Build
+      # 4. Build React app
+      # NOTE: CI=true is default in GitHub Actions.
+      # ESLint issues must be fixed in code (recommended).
+      - name: Build application
         run: npm run build
 
-      - name: Upload Build Artifact
+      # 5. Upload build artifact
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ github.run_id }}
+          name: react-build-${{ github.run_id }}
           path: build
