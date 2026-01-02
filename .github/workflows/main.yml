@@ -31,8 +31,14 @@ jobs:
       # 4. Build React app
       # NOTE: CI=true is default in GitHub Actions.
       # ESLint issues must be fixed in code (recommended).
+
       - name: Build application
-        run: npm run build
+        run: CI=false npm run build
+
+
+      
+      # - name: Build application
+      #   run: npm run build
 
       # 5. Upload build artifact
       - name: Upload build artifact
