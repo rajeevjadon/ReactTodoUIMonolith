@@ -28,7 +28,7 @@ jobs:
           node-version: 18
 
       - name: show var
-        run:  $NAME
+        run: echo $NAME
       
 
 
