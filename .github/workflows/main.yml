@@ -1,64 +1,32 @@
-name: React Application Pipeline
-run-name: Deploy by  @${{ github.actor }}
-
-
+name: Deploy Workflow
 on:
   workflow_dispatch:
     inputs:
       environment:
-        default: dev
-        description: select the environment
-        
-  
-
-
-
-      
+        description: 'Environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      version:
+        description: 'Application version (e.g., 1.0.0)'
+        required: true
+        type: string
+      run_tests:
+        description: 'Run tests before deployment?'
+        required: true
+        type: boolean
+        default: false
 jobs:
-  demo:
-    name: Demo Job
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{ vars.second }}-${{ inputs.environment }}
-        uses: actions/checkout@v4
-        #
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 16.x
-
-  
-            
-            
-
-      
-      # - name: Cache dependencies 
-      #   uses: actions/cache@v4 
-      #   with: 
-      #     path: node_modules 
-      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      
-
-          
-
-      # # 3. Install dependencies
-      # - name: Install dependencies
-      #   run: npm install
-
-      # # 4. Build React app
-      # # NOTE: CI=true is default in GitHub Actions.
-      # # ESLint issues must be fixed in code (recommended).
-
-      # - name: Build application
-      #   run: CI=false npm run build
-
-
-      
-    
-
-      # # 5. Upload build artifact
-      # - name: Upload build artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: react-build-${{ github.run_id }}
-      #     path: build
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Deploy
+        run: |
+          echo "Deploying version ${{ inputs.version }} to ${{ inputs.environment }}"
+          if [ "${{ inputs.run_tests }}" = "true" ]; then
+            echo "Running tests..."
+          fi
