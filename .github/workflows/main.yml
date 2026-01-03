@@ -1,18 +1,25 @@
 name: React Application Pipeline
 run-name: Deploy by  @${{ github.actor }}
+
+
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main    
+  workflow_dispatch:
+    inputs:
+      environment:
+        default: dev
+        description: select the environment
+        
+  
+
+
+
+      
 jobs:
   demo:
     name: Demo Job
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{ vars.second }}  # set the environme variable nts 
+      - name: Checkout ${{ vars.second }}-${{ inputs.environment }}  # set the environme variable nts 
         uses: actions/checkout@v4
         
       - name: Setup Node.js environment
