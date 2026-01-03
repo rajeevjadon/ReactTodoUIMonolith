@@ -6,17 +6,16 @@ on:
       - main
   pull_request:
     branches:
-      - main
-      
+      - main    
 jobs:
   demo:
     name: Demo Job
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{env.second}}  # set the environme variable nts 
+      - name: Checkout ${{ env.second }}  # set the environme variable nts 
         uses: actions/checkout@v4
         
-      - name: Setup Node.js environments
+      - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: 16.x
