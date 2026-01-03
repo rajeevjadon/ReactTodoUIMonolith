@@ -19,9 +19,9 @@ jobs:
     name: Demo Job
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout ${{ vars.second }}-${{ inputs.environment }}  # set the environme variable nts 
+      - name: Checkout   # set the environme variable nts 
         uses: actions/checkout@v4
-        
+        #${{ vars.second }}-${{ inputs.environment }}
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
