@@ -6,4 +6,32 @@ on:
         default: 'dev'
         required: false
         type: string 
+
+      image_name:
+        default: ubuntu-latest
+        required: false 
+        type: string
+
+      stepname:
+         default: rajeevka pipeline
+         required: false 
+         type: string 
+
+
+
+jobs:
+  greeting:
+    runs-on: ${{inputs.image_name}}
+    steps:
+      - name: ${{inputs.stepname}}
+        run:  |
+          echo Hello ths pipeline running on ${{inputs.image_name}} and steps name is ${{inputs.image_name}}
+
         
+       
+        
+
+
+
+
+
