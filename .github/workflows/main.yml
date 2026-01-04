@@ -7,6 +7,15 @@ on:
 jobs:
   build:
     uses:  rajeevjadon/ReactTodoUIMonolith/.github/workflows/practice.yml@main
+    with:
+      image_name: macos-latest
+      stepname: santosh ji ka pipeline 
+      environment: production 
+      
+        
+  
+  
+  
   # demo:
   #   name: Demo job 
   #   runs-on: ubuntu-latest
