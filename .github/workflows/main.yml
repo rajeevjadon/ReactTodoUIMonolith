@@ -5,44 +5,42 @@ on:
   push:
     branches:
       - main
-      - feature/**
   pull_request:
     branches:
       - main
 
 jobs:
   build-and-scan:
-    name: Build + SonarCloud Scan
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout code
+      # 1. Checkout
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # REQUIRED for Sonar
+          fetch-depth: 0
 
-      # 2️⃣ Setup Node
+      # 2. Setup Node
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 3️⃣ Install dependencies
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Build (CI=false to avoid ESLint break)
+      # 4. Build
       - name: Build app
         run: CI=false npm run build
 
-      # 5️⃣ SonarCloud Scan
+      # 5. SonarCloud Scan
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # 6️⃣ Quality Gate (FAIL pipeline if gate fails)
+      # 6. Quality Gate Check ✅ (FIXED)
       - name: SonarCloud Quality Gate
         uses: SonarSource/sonarcloud-quality-gate-action@v1.1.0
         timeout-minutes: 5
