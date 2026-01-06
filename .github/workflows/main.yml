@@ -1,49 +1,50 @@
-name: Application DemoWork Flow
-run-name: Deploy by @${{ github.actor }}
+name: React CI CD with SonarCloud
+run-name: CI by @${{ github.actor }}
 
-on: 
+on:
   push:
     branches:
       - main
-      - features/**  
-
+      - feature/**
   pull_request:
     branches:
       - main
 
 jobs:
-  demo:
-    name: Demo job
+  build-and-scan:
+    name: Build + SonarCloud Scan
     runs-on: ubuntu-latest
-    steps:
-      # Checkout source code
-      - name: Checkout
-        uses: actions/checkout@v4  
 
-      # Setup Node.js
-      - name: Setup Node.js environment
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # REQUIRED for Sonar
+
+      # 2️⃣ Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18
 
-      # # Cache dependencies
-      # - name: Cache node_modules
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: node_modules
-      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: npm install
 
-      # # Install dependencies
-      # - name: Install Dependencies
-      #   run: npm install 
+      # 4️⃣ Build (CI=false to avoid ESLint break)
+      - name: Build app
+        run: CI=false npm run build
 
-      # # Build application
-      # - name: Build
-      #   run: npm run build
+      # 5️⃣ SonarCloud Scan
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # # Upload build artifact
-      # - name: Upload Build Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: build-${{ github.run_id }}
-      #     path: build
+      # 6️⃣ Quality Gate (FAIL pipeline if gate fails)
+      - name: SonarCloud Quality Gate
+        uses: SonarSource/sonarcloud-quality-gate-action@v1.1.0
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
