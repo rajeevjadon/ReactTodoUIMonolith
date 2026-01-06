@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - features/**
+      - features/**  
 
   pull_request:
     branches:
@@ -15,7 +15,6 @@ jobs:
   demo:
     name: Demo job
     runs-on: ubuntu-latest
-
     steps:
       # Checkout source code
       - name: Checkout
@@ -27,24 +26,24 @@ jobs:
         with:
           node-version: 16
 
-      # Cache dependencies
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # # Cache dependencies
+      # - name: Cache node_modules
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-      # Install dependencies
-      - name: Install Dependencies
-        run: npm install 
+      # # Install dependencies
+      # - name: Install Dependencies
+      #   run: npm install 
 
-      # Build application
-      - name: Build
-        run: CI=false npm run build
+      # # Build application
+      # - name: Build
+      #   run: npm run build
 
-      # Upload build artifact
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ github.run_id }}
-          path: build
+      # # Upload build artifact
+      # - name: Upload Build Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build-${{ github.run_id }}
+      #     path: build
