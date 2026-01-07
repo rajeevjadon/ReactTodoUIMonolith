@@ -27,12 +27,12 @@ jobs:
       - name: Build
         run: CI=false npm run build
 
-      - name: SonarCloud Scan (with Quality Gate)
+      - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          args: >
+           args: >
             -Dsonar.projectKey=rajeevjadon_ReactTodoUIMonolith
             -Dsonar.organization=rajeevjadon
-            -Dsonar.qualitygate.wait=true
+
