@@ -1,48 +1,38 @@
-name: React CI CD with SonarCloud
-run-name: CI by @${{ github.actor }}
+name: CI with SonarCloud
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build-and-scan:
+  sonar:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2. Setup Node
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4. Build
-      - name: Build app
+      - name: Build
         run: CI=false npm run build
 
-      # 5. SonarCloud Scan
-      - name: SonarCloud Scan
+      - name: SonarCloud Scan (with Quality Gate)
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      # 6. Quality Gate Check ✅ (FIXED)
-      - name: SonarCloud Quality Gate
-        uses: SonarSource/sonarcloud-quality-gate-action@v1.1.0
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=rajeevjadon_ReactTodoUIMonolith
+            -Dsonar.organization=rajeevjadon
+            -Dsonar.qualitygate.wait=true
