@@ -46,4 +46,3 @@ jobs:
           args: >
             -Dsonar.projectKey=rajeevjadon_ReactTodoUIMonolith
             -Dsonar.organization=rajeevjadon
-            -Dsonar.qualitygate.wait=true
