@@ -46,3 +46,14 @@ jobs:
           args: >
             -Dsonar.projectKey=rajeevjadon_ReactTodoUIMonolith
             -Dsonar.organization=rajeevjadon
+            
+       # Super Linter
+      - name: Super Linter
+        uses: super-linter/super-linter@v7.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_CSS: true
+          VALIDATE_JSON: true
+          VALIDATE_YAML: true
+          DEFAULT_BRANCH: main
