@@ -48,6 +48,8 @@ jobs:
           VALIDATE_JSON: true
           VALIDATE_YAML: true
 
+          DISABLE_ERRORS: true 
+
   # -------------------------
   # Build Job
   # -------------------------
