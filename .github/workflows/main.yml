@@ -85,9 +85,12 @@ jobs:
           name: reactTodoUI
           path: build
 
+      - name: Echo RUN ID
+        run: echo "Thios workflowsn has run id - ${{ github.run_id }}"
 
-
-  ReleaseJobs:
+          
+  ReleaseJobs:                   
+    needs: buildJob
     name: Download & Deploy Artifacts Job 
     runs-on:  ubuntu-latest
     steps:
@@ -95,8 +98,9 @@ jobs:
       uses: actions/download-artifact@v7.0.0
       with:
         name: reactTodoUI
-    - name: Echo RUN ID
-      run: echo "Thios workflowsn has run id - ${{ github.run_id }}"
+
+    - name: Download from current run id 
+      run: echo "This artifactsdownloaded from this run id - ${{ github.run_id }}"
     
 
 
