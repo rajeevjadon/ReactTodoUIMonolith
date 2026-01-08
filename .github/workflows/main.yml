@@ -49,6 +49,11 @@ jobs:
         VALIDATE_JSON: true
 
 
+    - name: Install Dependencies
+      if: always()
+      run: npm install
+
+
     - name: Build Artifact
       run: npm run build
 
