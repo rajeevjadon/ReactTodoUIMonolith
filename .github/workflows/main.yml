@@ -76,7 +76,7 @@ jobs:
         run: npm install
 
       - name: Build artifact
-        run: CI=false npm run build
+        run: npm run build
   
 
       - name: Publish build artifact
