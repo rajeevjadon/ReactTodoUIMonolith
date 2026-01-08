@@ -29,6 +29,9 @@ jobs:
           args: >
             -Dsonar.projectKey=rajeevjadon_ReactTodoUIMonolith
             -Dsonar.organization=rajeevjadon
+            -Dsonar.sources=src
+            -Dsonar.tests=src
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
 
   lintjob:
     name: Lint job (Super Linter)
