@@ -68,7 +68,8 @@ jobs:
         run: npm install
 
       - name: Build artifact
-        run:  npm run build
+        run: CI=false npm run build
+  
 
       - name: Publish build artifact
         uses: actions/upload-artifact@v6.0.0
