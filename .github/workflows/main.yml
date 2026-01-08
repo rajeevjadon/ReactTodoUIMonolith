@@ -14,19 +14,13 @@ permissions:
   statuses: write
 
 jobs:
-  # -------------------------
-  # SonarCloud Scan Job
-  # -------------------------
-  sonar_scan:
-    name: SonarCloud Analysis
+  sonarjob:
+    name: Scan job (sonarQube Analysis)
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
+        uses: actions/checkout@v6.0.1
+        
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
@@ -36,13 +30,9 @@ jobs:
             -Dsonar.projectKey=rajeevjadon_ReactTodoUIMonolith
             -Dsonar.organization=rajeevjadon
 
-  # -------------------------
-  # Super Linter Job
-  # -------------------------
-  lint_job:
-    name: Super Linter
+  lintjob:
+    name: Lint job (Super Linter)
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,29 +51,27 @@ jobs:
   # -------------------------
   # Build Job
   # -------------------------
-  build_job:
-    name: Build & Publish Artifact
+  buildJob:
+    name: Build job Package (Setup Nodejs & Build Artifact)
     runs-on: ubuntu-latest
-    needs: [ sonar_scan, lint_job ]
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.1
 
-      - name: Setup Node.js
+      - name: Setup Node.js environments
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
+          node-version: 16.x
+          
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build application
-        run: CI=false npm run build
+      - name: Build artifact
+        run:  npm run build
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+      - name: Publish build artifact
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: reactTodoUI
           path: build/
