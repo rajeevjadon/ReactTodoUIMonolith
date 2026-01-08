@@ -31,8 +31,10 @@ jobs:
             -Dsonar.organization=rajeevjadon
             -Dsonar.sources=src
             -Dsonar.tests=src
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.test.inclusions=**/*test*.js,**/setupTests.js
+            -Dsonar.exclusions=**/setupTests.js
 
+            
   lintjob:
     name: Lint job (Super Linter)
     runs-on: ubuntu-latest
