@@ -1,43 +1,65 @@
-name: CI with SonarCloud
+name: CI with SonarCloud & Super-Linter
 
 run-name: Deploy by @${{ github.actor }}
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build-test-sonar:
-    name: Build, Test & Sonar Scan
+  build-test-quality:
+    name: Build, Lint & Sonar Scan
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout code
+      # -------------------------
+      # Checkout source code
+      # -------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # -------------------------
       # Setup Node.js
+      # -------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
 
+      # -------------------------
       # Install dependencies
+      # -------------------------
       - name: Install dependencies
         run: npm install
 
-      # Build app
+      # -------------------------
+      # Build application
+      # -------------------------
       - name: Build application
         run: CI=false npm run build
 
+      # -------------------------
+      # Super Linter (NON-BLOCKING CSS)
+      # -------------------------
+      - name: Super Linter
+        uses: super-linter/super-linter@v7.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: main
+
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_JSON: true
+          VALIDATE_YAML: true
+          VALIDATE_CSS: true
+
+      # -------------------------
       # SonarCloud Scan
+      # -------------------------
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
@@ -46,14 +68,12 @@ jobs:
           args: >
             -Dsonar.projectKey=rajeevjadon_ReactTodoUIMonolith
             -Dsonar.organization=rajeevjadon
-            
-       # Super Linter
-      - name: Super Linter
-        uses: super-linter/super-linter@v7.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_JAVASCRIPT_ES: true
-          VALIDATE_CSS: true
-          VALIDATE_JSON: true
-          VALIDATE_YAML: true
-          DEFAULT_BRANCH: main
+
+      # -------------------------
+      # Upload Build Artifact
+      # -------------------------
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-build
+          path: build/
