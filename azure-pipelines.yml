@@ -1,8 +1,47 @@
-trigger: none 
-pool: Default
+trigger: none   # manual run
 
-steps: 
-- task: PowerShell@2
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  NODE_VERSION: '18.x'
+  BUILD_DIR: 'build'
+
+steps:
+# 1️⃣ Checkout code
+- checkout: self
+  displayName: "Checkout Source Code"
+
+# 2️⃣ Setup Node.js
+- task: NodeTool@0
+  displayName: "Install Node.js"
   inputs:
-    targetType: 'inline'
-    script: 'Write-Host "Hello World"'
+    versionSpec: '$(NODE_VERSION)'
+
+# 3️⃣ Install dependencies
+- script: |
+    npm install
+  displayName: "Install Dependencies"
+
+# 4️⃣ Build UI Application
+- script: |
+    npm run build
+  displayName: "Build Todo UI Application"
+
+# 5️⃣ Archive build output
+- task: ArchiveFiles@2
+  displayName: "Archive Build Files"
+  inputs:
+    rootFolderOrFile: '$(BUILD_DIR)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/todo-ui-$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+# 6️⃣ Publish Artifact
+- task: PublishBuildArtifacts@1
+  displayName: "Publish Build Artifact"
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'todo-ui-artifact'
+    publishLocation: 'Container'
